@@ -1,6 +1,5 @@
 package chegamais.com.chagamais.model;
 
-import java.sql.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +8,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 public class Usuario {
@@ -20,7 +18,7 @@ public class Usuario {
     @NotNull @NotEmpty 
     private String nome;
     @NotNull @NotEmpty
-    private Date dataNascimento;
+    private String dataNascimento;
     private String posicaoFavorita;
     @NotNull @NotEmpty 
     private String email;
@@ -34,11 +32,11 @@ public class Usuario {
     }
 
 
-    public Usuario(@NotNull @NotEmpty String nome, @NotNull @NotEmpty Date dataNascimento, String posicaoFavorita,
+    public Usuario(@NotNull @NotEmpty String nome, @NotNull @NotEmpty String dataNascimento, String posicaoFavorita,
             @NotNull @NotEmpty String email, @NotNull @NotEmpty String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.posicaoFavorita = posicaoFavorita; 
+        this.posicaoFavorita = this.analisarPosicaoFavorita(posicaoFavorita);
         this.email = email;
         this.senha = senha;
     }
@@ -64,12 +62,12 @@ public class Usuario {
     }
 
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -80,7 +78,7 @@ public class Usuario {
 
 
     public void setPosicaoFavorita(String posicaoFavorita) {
-        this.posicaoFavorita = posicaoFavorita; 
+        this.posicaoFavorita = this.analisarPosicaoFavorita(posicaoFavorita);
        }
 
 
@@ -101,6 +99,15 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    private String analisarPosicaoFavorita(String posicao){
+        if( posicao == null || posicao == ""){
+            return "Não delcarada";
+        }
+        else {
+            return posicao;
+        }
     }
 
     

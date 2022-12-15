@@ -1,6 +1,5 @@
 package chegamais.com.chagamais.controller.DTO;
 
-import java.sql.Date;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +14,7 @@ public class UsuarioDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String posicaoFavorita;
     private String email;
     private String senha;
@@ -25,10 +24,10 @@ public class UsuarioDTO {
     }
 
 
-    public UsuarioDTO(String nome, Date dataNascimento, String posicaoFavorita, String email, String senha) {
+    public UsuarioDTO(String nome, String dataNascimento, String posicaoFavorita, String email, String senha) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.posicaoFavorita = this.analisarPosicaoFavorita(posicaoFavorita);
+        this.posicaoFavorita = posicaoFavorita;
         this.email = email;
         this.senha = senha;
     }
@@ -54,12 +53,12 @@ public class UsuarioDTO {
     }
 
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -70,7 +69,7 @@ public class UsuarioDTO {
 
 
     public void setPosicaoFavorita(String posicaoFavorita) {
-        this.posicaoFavorita = this.analisarPosicaoFavorita(posicaoFavorita);
+        this.posicaoFavorita = posicaoFavorita;
     }
 
 
@@ -105,14 +104,7 @@ public class UsuarioDTO {
 
     }
 
-    private String analisarPosicaoFavorita(String posicao){
-        if( posicao == null || posicao == ""){
-            return "Não delcarada";
-        }
-        else {
-            return posicao;
-        }
-    }
+    
 
     
 

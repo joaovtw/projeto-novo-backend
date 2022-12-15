@@ -1,10 +1,6 @@
 package chegamais.com.chagamais.controller.Form;
 
-import java.sql.Date;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +12,7 @@ public class UsuarioForm {
     @NotNull @NotEmpty 
     private String nome;
     @NotNull @NotEmpty
-    private Date dataNascimento;
+    private String dataNascimento;
     private String posicaoFavorita;
     @NotNull @NotEmpty 
     private String email;
@@ -29,10 +25,10 @@ public class UsuarioForm {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
     public String getPosicaoFavorita() {

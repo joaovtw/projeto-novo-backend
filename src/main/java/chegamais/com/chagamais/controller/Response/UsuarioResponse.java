@@ -1,17 +1,16 @@
 package chegamais.com.chagamais.controller.Response;
 
-import java.sql.Date;
 
 public class UsuarioResponse {
 
-    private long id;
+    private Long id;
     private String nome;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String posicaoFavorita;
     private String email;
     
 
-    public UsuarioResponse(long id, String nome, Date dataNascimento, String posicaoFavorita, String email) {
+    public UsuarioResponse(Long id, String nome, String dataNascimento, String posicaoFavorita, String email) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -20,7 +19,7 @@ public class UsuarioResponse {
     }
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -30,7 +29,7 @@ public class UsuarioResponse {
     }
 
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 

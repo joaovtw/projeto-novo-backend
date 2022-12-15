@@ -2,7 +2,6 @@ package chegamais.com.chagamais.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.sql.Date;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.model.Usuario;
 import chegamais.com.chagamais.repository.UsuarioRepository;
 
+@Service
 public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Autowired
@@ -19,7 +19,6 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Override
     public List<UsuarioDTO> obterTodos() {
-        // TODO Auto-generated method stub
 
         List<Usuario> usuarios = usuarioRepository.findAll();
 
@@ -28,7 +27,6 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Override
     public UsuarioDTO obterPorId(Long id) {
-        // TODO Auto-generated method stub
 
         Optional<Usuario> usuarioOp = usuarioRepository.findById(id);
 
@@ -37,7 +35,6 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Override
     public UsuarioDTO adicionar(UsuarioDTO dto) {
-        // TODO Auto-generated method stub
 
         dto.setId(null);
 
@@ -45,14 +42,15 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         Usuario usuario = dto.converterParaModel();
 
         usuarioRepository.save(usuario);
+
         dto.setId(usuario.getId());
+
 
         return dto;
     }
 
     @Override
     public UsuarioDTO atualizar(UsuarioDTO dto, Long id) {
-        // TODO Auto-generated method stub
 
         Optional<Usuario> usuarioOp = usuarioRepository.findById(id);
 
@@ -62,16 +60,14 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
         usuarioRepository.save(usuario);
         
-        dto = this.converterModelParaDTO(usuario);
-        dto.setId(usuario.getId());
+        
 
 
-        return dto;
+        return  this.converterModelParaDTO(usuario);
     }
 
     @Override
     public UsuarioDTO deletarPorId(Long id) {
-        // TODO Auto-generated method stub
 
         Optional<Usuario> usuarioOp = usuarioRepository.findById(id);
 
@@ -90,8 +86,11 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
     //funcoes auxiliares
 
     private UsuarioDTO converterModelParaDTO(Usuario usuario){
-        return new  UsuarioDTO(usuario.getNome(), usuario.getDataNascimento(), 
+        UsuarioDTO dto = new  UsuarioDTO(usuario.getNome(), usuario.getDataNascimento(), 
         usuario.getPosicaoFavorita(), usuario.getEmail(), usuario.getSenha());
+        dto.setId(usuario.getId());
+
+        return dto;
 
     }
 
@@ -153,7 +152,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
             }
         }
         
-        Date dataNascimentoDTO = usuarioDTO.getDataNascimento();
+        String dataNascimentoDTO = usuarioDTO.getDataNascimento();
         if(dataNascimentoDTO != null){
             usuario.setDataNascimento(dataNascimentoDTO);
 

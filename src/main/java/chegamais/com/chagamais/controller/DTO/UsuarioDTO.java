@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import chegamais.com.chagamais.controller.Response.UsuarioResponse;
 import chegamais.com.chagamais.model.Usuario;
 
-public class UsuarioDTO {
+public class UsuarioDTO implements DTO_Interface<Usuario, UsuarioResponse>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

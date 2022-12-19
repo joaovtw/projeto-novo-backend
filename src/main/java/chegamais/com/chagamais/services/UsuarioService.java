@@ -11,11 +11,16 @@ import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.model.Usuario;
 import chegamais.com.chagamais.repository.UsuarioRepository;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<UsuarioDTO> obterTodos() {
@@ -33,18 +38,20 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         return this.converterOptional(usuarioOp, false);
     }
 
+    @Transactional(rollbackFor = Exception.class) //garante que se der erro, não salva no banco
     @Override
     public UsuarioDTO adicionar(UsuarioDTO dto) {
 
         dto.setId(null);
 
+        dto.setSenha(bCryptPasswordEncoder
+                .encode(dto.getSenha()));
 
         Usuario usuario = dto.converterParaModel();
 
         usuarioRepository.save(usuario);
 
         dto.setId(usuario.getId());
-
 
         return dto;
     }

@@ -66,8 +66,6 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         this.verificarEAtualizar(usuario, dto);
 
         usuarioRepository.save(usuario);
-        
-        
 
 
         return  this.converterModelParaDTO(usuario);

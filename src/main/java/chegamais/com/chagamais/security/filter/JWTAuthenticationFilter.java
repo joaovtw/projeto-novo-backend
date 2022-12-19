@@ -1,4 +1,4 @@
-package chegamais.com.chagamais.security.jwt;
+package chegamais.com.chagamais.security.filter;
 
 import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.model.Usuario;

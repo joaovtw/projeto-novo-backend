@@ -1,4 +1,4 @@
-package chegamais.com.chagamais.security.jwt;
+package chegamais.com.chagamais.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -33,6 +33,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
         chain.doFilter(request, response);
     }
+
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader("Authorization"); // ALTERAR

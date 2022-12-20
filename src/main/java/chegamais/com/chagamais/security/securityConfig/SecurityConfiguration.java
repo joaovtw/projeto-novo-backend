@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +33,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "api/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST).permitAll() //TODO: mudar para permitir apenas o endpoint de registro
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -50,6 +51,13 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
          */
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/swagger-ui.html", "/swagger-ui/**/",
+                "/swagger-ui/index.html/**", "/v2/api-docs", "/swagger-resources/**", "/configuration/ui",
+                "/configuration/security", "/webjars/**");
     }
 
 

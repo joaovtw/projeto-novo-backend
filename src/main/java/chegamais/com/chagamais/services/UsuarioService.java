@@ -165,12 +165,4 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     }
 
-    
-
-    
-
-    
-
-   
-    
 }

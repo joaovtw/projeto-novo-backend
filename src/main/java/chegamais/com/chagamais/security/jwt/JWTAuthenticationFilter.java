@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static chegamais.com.chagamais.security.securityConfig.SecurityConstants.*;
+
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 
@@ -49,8 +51,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
         String token = JWT.create()
                 .withSubject(((Usuario) auth.getPrincipal()).getEmail())
-                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + 864000000)) // alterar tempo de expiração do token
-                .sign(Algorithm.HMAC512("password".getBytes())); //senha para gerar o token ALTERAR
+                .withExpiresAt(new java.util.Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SECRET_KEY.getBytes()));
 
         String body = ((Usuario) auth.getPrincipal()).getId() + ";" + token;
         response.getWriter().write(body);

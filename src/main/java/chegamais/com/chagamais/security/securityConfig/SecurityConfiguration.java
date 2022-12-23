@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST).permitAll() //TODO: mudar para permitir apenas o endpoint de registro
+                .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll() //TODO: mudar para permitir apenas o endpoint de registro
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -60,18 +60,6 @@ public class SecurityConfiguration {
         return (web) -> web.ignoring().antMatchers("/swagger-ui.html", "/swagger-ui/**/",
                 "/swagger-ui/index.html/**", "/v2/api-docs", "/swagger-resources/**", "/configuration/ui",
                 "/configuration/security", "/webjars/**");
-    }
-
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails usuario = User.builder()
-                .username("usuario")
-                .password("senha")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(usuario); // TODO: Alterar para banco de dados (JDBC)
     }
 
     @Bean

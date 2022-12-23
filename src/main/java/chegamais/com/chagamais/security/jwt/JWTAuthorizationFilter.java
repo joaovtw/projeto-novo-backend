@@ -1,4 +1,4 @@
-package chegamais.com.chagamais.security.filter;
+package chegamais.com.chagamais.security.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

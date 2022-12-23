@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.model.Usuario;
 import chegamais.com.chagamais.repository.UsuarioRepository;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -20,7 +20,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<UsuarioDTO> obterTodos() {
@@ -44,8 +44,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
         dto.setId(null);
 
-        dto.setSenha(bCryptPasswordEncoder
-                .encode(dto.getSenha()));
+        dto.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         Usuario usuario = dto.converterParaModel();
 

@@ -50,6 +50,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
         String token = JWT.create()
+                .withIssuer("auth0")
                 .withSubject(((Usuario) auth.getPrincipal()).getEmail())
                 .withExpiresAt(new java.util.Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SECRET_KEY.getBytes()));

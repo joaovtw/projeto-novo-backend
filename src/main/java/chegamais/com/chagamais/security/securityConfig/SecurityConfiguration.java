@@ -21,6 +21,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static chegamais.com.chagamais.security.securityConfig.SecurityConstants.SIGN_UP_URL;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -45,7 +47,7 @@ public class SecurityConfiguration {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/auth/**").permitAll() //TODO: mudar para permitir apenas o endpoint de registro
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll() //TODO: mudar para permitir apenas o endpoint de registro
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();

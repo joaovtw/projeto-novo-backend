@@ -38,16 +38,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("Authorization"); // ALTERAR
+        String token = request.getHeader(HEADER_STRING); // ALTERAR
 
         if (token != null) {
-            String user = JWT.require(Algorithm.HMAC512("password".getBytes())) // ALTERAR
+            String user = JWT.require(Algorithm.HMAC512(SECRET_KEY.getBytes()))
                     .build()
-                    .verify(token.replace("Bearer ", "")) // ALTERAR
+                    .verify(token.replace(TOKEN_PREFIX, "")) // ALTERAR
                     .getSubject();
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()); // ALTERAR
             }
             return null;
         }

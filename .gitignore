@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### some logs ###
+hs_err_pid*.log
+replay_pid*.log
+
+### env ###
+.env

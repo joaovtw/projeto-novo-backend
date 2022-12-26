@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 
+import chegamais.com.chagamais.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -47,6 +50,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         dto.setSenha(passwordEncoder.encode(dto.getSenha()));
 
         Usuario usuario = dto.converterParaModel();
+
 
         usuarioRepository.save(usuario);
 

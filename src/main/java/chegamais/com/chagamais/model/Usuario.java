@@ -109,7 +109,7 @@ public class Usuario {
 
     private String analisarPosicaoFavorita(String posicao){
         if( posicao == null || posicao == ""){
-            return "Não delcarada";
+            return "Não declarada";
         }
         else {
             return posicao;

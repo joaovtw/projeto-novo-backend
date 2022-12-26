@@ -2,6 +2,7 @@ package chegamais.com.chagamais.controller;
 
 import chegamais.com.chagamais.controller.DTO.LoginDTO;
 import chegamais.com.chagamais.controller.Form.UsuarioForm;
+import chegamais.com.chagamais.repository.RoleRepository;
 import chegamais.com.chagamais.security.jwt.JWTAuthenticationFilter;
 import chegamais.com.chagamais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,14 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
     private UsuarioService usuarioService;
     private JWTAuthenticationFilter jwtAuthenticationFilter;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UsuarioService usuarioService, JWTAuthenticationFilter jwtAuthenticationFilter) {
+    public AuthController(AuthenticationManager authenticationManager, UsuarioService usuarioService, JWTAuthenticationFilter jwtAuthenticationFilter, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.usuarioService = usuarioService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/register")

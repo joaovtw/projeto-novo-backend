@@ -1,9 +1,11 @@
 package chegamais.com.chagamais.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 
+import chegamais.com.chagamais.model.Role;
 import chegamais.com.chagamais.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,11 +48,11 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
     public UsuarioDTO adicionar(UsuarioDTO dto) {
 
         dto.setId(null);
-
         dto.setSenha(passwordEncoder.encode(dto.getSenha()));
+        Role role = roleRepository.findByNome("USER").get();
 
         Usuario usuario = dto.converterParaModel();
-
+        usuario.setRoles(Collections.singletonList(role));
 
         usuarioRepository.save(usuario);
 

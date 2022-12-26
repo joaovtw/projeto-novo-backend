@@ -2,8 +2,10 @@ package chegamais.com.chagamais.controller;
 
 import chegamais.com.chagamais.controller.DTO.LoginDTO;
 import chegamais.com.chagamais.controller.Form.UsuarioForm;
+import chegamais.com.chagamais.controller.Response.AuthResponse;
 import chegamais.com.chagamais.repository.RoleRepository;
 import chegamais.com.chagamais.security.jwt.JWTAuthenticationFilter;
+import chegamais.com.chagamais.security.jwt.JWTAuthorizationFilter;
 import chegamais.com.chagamais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,14 +29,14 @@ public class AuthController {
 
     private AuthenticationManager authenticationManager;
     private UsuarioService usuarioService;
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
+    private JWTAuthorizationFilter jwtAuthorizationFilter;
     private RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UsuarioService usuarioService, JWTAuthenticationFilter jwtAuthenticationFilter, RoleRepository roleRepository) {
+    public AuthController(AuthenticationManager authenticationManager, UsuarioService usuarioService, JWTAuthorizationFilter jwtAuthorizationFilter, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.usuarioService = usuarioService;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
         this.roleRepository = roleRepository;
     }
 
@@ -48,11 +50,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginDTO loginDTO) {
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginDTO loginDTO) {
+        // mover para a lógica de serviço
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getSenha()));
-        SecurityContextHolder.getContext().setAuthentication(auth); // mover para a lógica de serviço
-
-        return new ResponseEntity<>("Usuário logado com sucesso", HttpStatus.OK);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        String token = jwtAuthorizationFilter.generateJWTToken(auth);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
     }
 }

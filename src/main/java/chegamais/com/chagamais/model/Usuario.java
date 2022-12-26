@@ -27,7 +27,7 @@ public class Usuario {
    @NotNull @NotEmpty 
     private String senha;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) //cria uma tabela de relacionamento entre usuario e role
     private List<Role> roles = new ArrayList<>();

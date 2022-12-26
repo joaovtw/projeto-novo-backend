@@ -5,10 +5,10 @@ import javax.persistence.*;
 @Entity
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String nomeRole;
+    private String nome;
 
     public Long getId() {
         return id;
@@ -18,11 +18,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getNomeRole() {
-        return nomeRole;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNomeRole(String nomeRole) {
-        this.nomeRole = nomeRole;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

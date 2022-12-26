@@ -26,9 +26,10 @@ public class Usuario {
     private String email;
    @NotNull @NotEmpty 
     private String senha;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) //cria uma tabela de relacionamento entre usuario e role
     private List<Role> roles = new ArrayList<>();
 
     public Usuario() {
@@ -37,12 +38,13 @@ public class Usuario {
 
 
     public Usuario(@NotNull @NotEmpty String nome, @NotNull @NotEmpty String dataNascimento, String posicaoFavorita,
-            @NotNull @NotEmpty String email, @NotNull @NotEmpty String senha) {
+            @NotNull @NotEmpty String email, @NotNull @NotEmpty String senha, List<Role> roles) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.posicaoFavorita = this.analisarPosicaoFavorita(posicaoFavorita);
         this.email = email;
         this.senha = senha;
+        this.roles = roles;
     }
 
 

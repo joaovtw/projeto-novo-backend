@@ -136,28 +136,28 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
         String nomeDTO = usuarioDTO.getNome();
         if(nomeDTO != null ){
-            if(nomeDTO != ""){
+            if(!nomeDTO.equals("")){
                 usuario.setNome(nomeDTO);
             }
         }
 
         String emailDTO = usuarioDTO.getEmail();
         if(emailDTO != null ){
-            if(emailDTO != ""){
+            if(!emailDTO.equals("")){
                 usuario.setEmail(emailDTO);
             }
         }
 
         String senhaDTO = usuarioDTO.getSenha();
         if(senhaDTO != null){
-            if(senhaDTO != ""){
+            if(!senhaDTO.equals("")){
                 usuario.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
             }
         }
 
         String posicaoDTO = usuarioDTO.getPosicaoFavorita();
         if(posicaoDTO != null){
-            if(posicaoDTO != ""){
+            if(!posicaoDTO.equals("")){
                 usuario.setPosicaoFavorita(posicaoDTO);;
             }
         }

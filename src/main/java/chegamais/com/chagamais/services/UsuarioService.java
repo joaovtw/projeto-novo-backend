@@ -151,7 +151,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         String senhaDTO = usuarioDTO.getSenha();
         if(senhaDTO != null){
             if(senhaDTO != ""){
-                usuario.setSenha(senhaDTO);
+                usuario.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
             }
         }
 

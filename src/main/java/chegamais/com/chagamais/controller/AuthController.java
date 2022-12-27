@@ -42,10 +42,10 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody @Valid UsuarioForm usuarioForm) {
-        // adicionar checagem de email já existente
-
+        // mover para a lógica de serviço
+        if (this.usuarioService.checksEmail(usuarioForm.getEmail()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email já cadastrado");
         this.usuarioService.adicionar(usuarioForm.converterParaDTO());
-
         return new ResponseEntity<>("Usuário cadastrado com sucesso", HttpStatus.OK);
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
 
+import chegamais.com.chagamais.config.ErroDeValidacaoDTO;
 import chegamais.com.chagamais.model.Role;
 import chegamais.com.chagamais.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,7 +110,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
     	
     	for(Usuario usuario: usuarios) {
     		UsuarioDTO dto = this.converterModelParaDTO(usuario);
-    		DTOs.add( dto);
+    		DTOs.add(dto);
     	}
     	
     	return DTOs;
@@ -168,6 +169,10 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
 
         }
 
+    }
+
+    public boolean checksEmail(String email) {
+        return usuarioRepository.findByEmail(email).isPresent();
     }
 
 }

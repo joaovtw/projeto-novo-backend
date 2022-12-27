@@ -158,7 +158,7 @@ public class UsuarioService implements ServiceInteface<UsuarioDTO> {
         String posicaoDTO = usuarioDTO.getPosicaoFavorita();
         if(posicaoDTO != null){
             if(!posicaoDTO.equals("")){
-                usuario.setPosicaoFavorita(posicaoDTO);;
+                usuario.setPosicaoFavorita(posicaoDTO);
             }
         }
         

@@ -44,6 +44,10 @@ public class Grupo {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    public List<Usuario> getMembros() {
+    	return this.membros;
+    }
 
     
 

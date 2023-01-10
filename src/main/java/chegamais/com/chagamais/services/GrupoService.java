@@ -8,128 +8,140 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import chegamais.com.chagamais.controller.DTO.GrupoDTO;
+import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.model.Grupo;
+import chegamais.com.chagamais.model.Usuario;
 import chegamais.com.chagamais.repository.GrupoRepository;
 
 @Service
-public class GrupoService implements ServiceInteface<GrupoDTO>{
+public class GrupoService implements ServiceInteface<GrupoDTO> {
 
-    @Autowired
-    private GrupoRepository grupoRepository;
+	@Autowired
+	private GrupoRepository grupoRepository;
 
-    @Override
-    public List<GrupoDTO> obterTodos() {
-        List<Grupo> Grupos = grupoRepository.findAll();
+	@Override
+	public List<GrupoDTO> obterTodos() {
+		List<Grupo> Grupos = grupoRepository.findAll();
 
-        return this.converterLista(Grupos);
-    }
+		return this.converterLista(Grupos);
+	}
 
-    @Override
-    public GrupoDTO obterPorId(Long id) {
-        Optional<Grupo> GrupoOp = grupoRepository.findById(id);
+	@Override
+	public GrupoDTO obterPorId(Long id) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(id);
 
-        return this.converterOptional(GrupoOp, false);
-    }
+		return this.converterOptional(GrupoOp, false);
+	}
 
-    @Override
-    public GrupoDTO adicionar(GrupoDTO dto) {
-        dto.setId(null);
+	public List<UsuarioDTO> obterMembrosPorId(Long id) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(id);
 
+		if (GrupoOp.isPresent()) {
+			return this.converterListaUsuarios(GrupoOp.get().getMembros());
+		} else {
+			return null;
+		}
+	}
 
-        Grupo Grupo = dto.converterParaModel();
+	@Override
+	public GrupoDTO adicionar(GrupoDTO dto) {
+		dto.setId(null);
 
-        grupoRepository.save(Grupo);
+		Grupo Grupo = dto.converterParaModel();
 
-        dto.setId(Grupo.getId());
+		grupoRepository.save(Grupo);
 
+		dto.setId(Grupo.getId());
 
-        return dto;
-    }
+		return dto;
+	}
 
-    @Override
-    public GrupoDTO atualizar(GrupoDTO dto, Long id) {
-        Optional<Grupo> GrupoOp = grupoRepository.findById(id);
+	@Override
+	public GrupoDTO atualizar(GrupoDTO dto, Long id) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(id);
 
-        Grupo Grupo = GrupoOp.get();
+		Grupo Grupo = GrupoOp.get();
 
-        this.verificarEAtualizar(Grupo, dto);
+		this.verificarEAtualizar(Grupo, dto);
 
-        grupoRepository.save(Grupo);
-        
-        
+		grupoRepository.save(Grupo);
 
+		return this.converterModelParaDTO(Grupo);
+	}
 
-        return  this.converterModelParaDTO(Grupo);
-    }
+	@Override
+	public GrupoDTO deletarPorId(Long id) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(id);
 
-    @Override
-    public GrupoDTO deletarPorId(Long id) {
-        Optional<Grupo> GrupoOp = grupoRepository.findById(id);
+		if (!GrupoOp.isPresent()) {
+			return null;
+		}
 
-        if(!GrupoOp.isPresent()){
-            return null;
-        }
+		GrupoDTO GrupoDTO = this.converterOptional(GrupoOp, true);
 
-        GrupoDTO GrupoDTO = this.converterOptional(GrupoOp, true);
+		grupoRepository.deleteById(id);
 
-        grupoRepository.deleteById(id);
+		return GrupoDTO;
+	}
 
-        return GrupoDTO;
-    }
+	// funcoes auxiliares
 
-     //funcoes auxiliares
+	private GrupoDTO converterModelParaDTO(Grupo Grupo) {
+		GrupoDTO dto = new GrupoDTO(Grupo.getNome());
+		dto.setId(Grupo.getId());
 
-     private GrupoDTO converterModelParaDTO(Grupo Grupo){
-        GrupoDTO dto = new  GrupoDTO(Grupo.getNome());
-        dto.setId(Grupo.getId());
+		return dto;
 
-        return dto;
+	}
 
-    }
+	private List<UsuarioDTO> converterListaUsuarios(List<Usuario> Usuarios) {
+		List<UsuarioDTO> DTOs = new ArrayList<UsuarioDTO>();
 
-    private List<GrupoDTO> converterLista(List<Grupo> Grupos){
-    	List<GrupoDTO> DTOs = new ArrayList<GrupoDTO>();
-    	
-    	for(Grupo Grupo: Grupos) {
-    		GrupoDTO dto = this.converterModelParaDTO(Grupo);
-    		DTOs.add( dto);
-    	}
-    	
-    	return DTOs;
-    	
-    }
+		for (Usuario Usuario : Usuarios) {
+			UsuarioDTO dto = new UsuarioDTO(Usuario.getNome(), Usuario.getDataNascimento(), Usuario.getPosicaoFavorita(), Usuario.getEmail(), null);
+			DTOs.add(dto);
+		}
 
-    private GrupoDTO converterOptional(Optional<Grupo> GrupoOp, Boolean confere){
+		return DTOs;
 
-        if(!confere){
-        if(!GrupoOp.isPresent()){
-            return null;
-        }
-    }
+	}
 
-        Grupo Grupo = GrupoOp.get();
-        GrupoDTO dto = this.converterModelParaDTO(Grupo);
+	private List<GrupoDTO> converterLista(List<Grupo> Grupos) {
+		List<GrupoDTO> DTOs = new ArrayList<GrupoDTO>();
 
+		for (Grupo Grupo : Grupos) {
+			GrupoDTO dto = this.converterModelParaDTO(Grupo);
+			DTOs.add(dto);
+		}
 
-        return dto;
+		return DTOs;
 
-    }
+	}
 
-    private void verificarEAtualizar(Grupo Grupo, GrupoDTO GrupoDTO){
+	private GrupoDTO converterOptional(Optional<Grupo> GrupoOp, Boolean confere) {
 
-        String nomeDTO = GrupoDTO.getNome();
-        if(nomeDTO != null ){
-            if(nomeDTO != ""){
-                Grupo.setNome(nomeDTO);
-            }
-        }
+		if (!confere) {
+			if (!GrupoOp.isPresent()) {
+				return null;
+			}
+		}
 
-        
+		Grupo Grupo = GrupoOp.get();
+		GrupoDTO dto = this.converterModelParaDTO(Grupo);
 
-    }
+		return dto;
 
-    
+	}
 
-    
-    
+	private void verificarEAtualizar(Grupo Grupo, GrupoDTO GrupoDTO) {
+
+		String nomeDTO = GrupoDTO.getNome();
+		if (nomeDTO != null) {
+			if (nomeDTO != "") {
+				Grupo.setNome(nomeDTO);
+			}
+		}
+
+	}
+
 }

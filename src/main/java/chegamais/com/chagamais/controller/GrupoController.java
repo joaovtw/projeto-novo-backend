@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import chegamais.com.chagamais.controller.DTO.GrupoDTO;
+import chegamais.com.chagamais.controller.DTO.UsuarioDTO;
 import chegamais.com.chagamais.controller.Form.GrupoForm;
 import chegamais.com.chagamais.controller.Form.GrupoFormUpdate;
 import chegamais.com.chagamais.controller.Response.GrupoResponse;
+import chegamais.com.chagamais.controller.Response.UsuarioResponse;
 import chegamais.com.chagamais.services.GrupoService;
 
 @RestController
@@ -36,6 +38,14 @@ public class GrupoController {
         List<GrupoDTO> Grupos = this.grupoService.obterTodos();
 
         return this.converterLista(Grupos);
+    }
+    
+    @GetMapping("/{id}/listarMembros")
+    public ResponseEntity<List<UsuarioResponse>> listarMembros(@PathVariable Long id){
+    	
+    	List<UsuarioDTO> listaMembros = grupoService.obterMembrosPorId(id);
+    	
+    	return this.gerarRespostaListagemMembros(listaMembros, 200);
     }
 
     @GetMapping("/{id}")
@@ -82,10 +92,29 @@ public class GrupoController {
         return ResponseEntity.status(status).body(grupoDTO.converterParaResponse());
     }
     
+    private ResponseEntity<List<UsuarioResponse>> gerarRespostaListagemMembros(List<UsuarioDTO> list, int status) {
+
+        if(list == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return ResponseEntity.status(status).body(this.converterListaUsuario(list));
+    }
+    
     private List<GrupoResponse> converterLista(List<GrupoDTO> grupos){
     	List<GrupoResponse> responses = new ArrayList<GrupoResponse>();
     	
     	for(GrupoDTO dto: grupos) {
+    		responses.add(dto.converterParaResponse());
+    	}
+    	
+    	return responses;
+    }
+    
+    private List<UsuarioResponse> converterListaUsuario(List<UsuarioDTO> usuarios){
+    	List<UsuarioResponse> responses = new ArrayList<UsuarioResponse>();
+    	
+    	for(UsuarioDTO dto: usuarios) {
     		responses.add(dto.converterParaResponse());
     	}
     	

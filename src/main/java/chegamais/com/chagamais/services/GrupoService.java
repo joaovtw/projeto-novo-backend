@@ -19,6 +19,9 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 	@Autowired
 	private GrupoRepository grupoRepository;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@Override
 	public List<GrupoDTO> obterTodos() {
 		List<Grupo> Grupos = grupoRepository.findAll();
@@ -38,6 +41,21 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 
 		if (GrupoOp.isPresent()) {
 			return this.converterListaUsuarios(GrupoOp.get().getMembros());
+		} else {
+			return null;
+		}
+	}
+
+	public Grupo addMembro(Long idGrupo, Long idMembro) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(idGrupo);
+		UsuarioDTO user = usuarioService.obterPorId(idMembro);
+
+		if (GrupoOp.isPresent() && user != null) {
+			Usuario user1 = new Usuario();
+			user1.setId(user.getId());
+			GrupoOp.get().addMembro(user1);
+			this.grupoRepository.saveAndFlush(GrupoOp.get());
+			return GrupoOp.get();
 		} else {
 			return null;
 		}
@@ -98,7 +116,8 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 		List<UsuarioDTO> DTOs = new ArrayList<UsuarioDTO>();
 
 		for (Usuario Usuario : Usuarios) {
-			UsuarioDTO dto = new UsuarioDTO(Usuario.getNome(), Usuario.getDataNascimento(), Usuario.getPosicaoFavorita(), Usuario.getEmail(), null);
+			UsuarioDTO dto = new UsuarioDTO(Usuario.getNome(), Usuario.getDataNascimento(),
+					Usuario.getPosicaoFavorita(), Usuario.getEmail(), null);
 			DTOs.add(dto);
 		}
 

@@ -23,6 +23,7 @@ import chegamais.com.chagamais.controller.Form.GrupoForm;
 import chegamais.com.chagamais.controller.Form.GrupoFormUpdate;
 import chegamais.com.chagamais.controller.Response.GrupoResponse;
 import chegamais.com.chagamais.controller.Response.UsuarioResponse;
+import chegamais.com.chagamais.model.Grupo;
 import chegamais.com.chagamais.services.GrupoService;
 
 @RestController
@@ -63,6 +64,14 @@ public class GrupoController {
 
         return this.gerarResposta(GrupoDTO, 200);
     }
+    
+    @PostMapping("/{idGrupo}/adicionarMembro/{idUsuario}")
+    public ResponseEntity<Grupo> adicionarMembro(@PathVariable Long idGrupo, @PathVariable Long idUsuario){
+
+        Grupo grupo = this.grupoService.addMembro(idGrupo, idUsuario);
+
+        return this.gerarRespostaCompleta(grupo, 201);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<GrupoResponse> atualizar(@RequestBody GrupoFormUpdate GrupoFormUpdate, @PathVariable Long id){
@@ -90,6 +99,15 @@ public class GrupoController {
         }
         
         return ResponseEntity.status(status).body(grupoDTO.converterParaResponse());
+    }
+    
+    private ResponseEntity<Grupo> gerarRespostaCompleta(Grupo grupo, int status) {
+    	
+    	if(grupo == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        return ResponseEntity.status(status).body(grupo);
     }
     
     private ResponseEntity<List<UsuarioResponse>> gerarRespostaListagemMembros(List<UsuarioDTO> list, int status) {

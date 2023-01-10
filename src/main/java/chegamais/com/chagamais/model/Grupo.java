@@ -2,10 +2,14 @@ package chegamais.com.chagamais.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,7 +23,8 @@ public class Grupo {
     @NotNull @NotEmpty 
     private String nome;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "grupo_membro", joinColumns = @JoinColumn(name = "grupo_id"), inverseJoinColumns = @JoinColumn(name = "membro_id"))
     private List<Usuario> membros;
 
     public Grupo() {
@@ -48,7 +53,18 @@ public class Grupo {
     public List<Usuario> getMembros() {
     	return this.membros;
     }
+    
+    public Usuario addMembro(Usuario user) {
+    	if (!existsMembro(user)) {
+    		this.membros.add(user);
+    		return user;
+    	}
+    	return null;
+    }
 
+    public boolean existsMembro(Usuario user) {
+    	return this.membros.contains(user);
+    }
     
 
     

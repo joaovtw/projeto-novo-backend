@@ -55,19 +55,19 @@ public class Grupo {
     }
     
     public Usuario addMembro(Usuario user) {
-    	if (!existsMembro(user)) {
+    	if (!containsMembro(user)) {
     		this.membros.add(user);
     		return user;
     	}
     	return null;
     }
 
-    public boolean existsMembro(Usuario user) {
+    public boolean containsMembro(Usuario user) {
     	return this.membros.contains(user);
     }
     
     public Usuario removeMembro(Usuario user) {
-    	if (existsMembro(user)) {
+    	if (containsMembro(user)) {
     		this.membros.remove(user);
     		return user;
     	}

@@ -60,7 +60,7 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 			return null;
 		}
 	}
-	
+
 	public Grupo removeMembro(Long idGrupo, Long idMembro) {
 		Optional<Grupo> GrupoOp = grupoRepository.findById(idGrupo);
 		UsuarioDTO user = usuarioService.obterPorId(idMembro);
@@ -68,12 +68,36 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 		if (GrupoOp.isPresent() && user != null) {
 			Usuario user1 = new Usuario();
 			user1.setId(user.getId());
-			GrupoOp.get().removeMembro(user1);
-			this.grupoRepository.saveAndFlush(GrupoOp.get());
-			return GrupoOp.get();
+			if (GrupoOp.get().removeMembro(user1) != null) {
+				this.grupoRepository.saveAndFlush(GrupoOp.get());
+				return GrupoOp.get();
+			}
+			return null;
 		} else {
 			return null;
 		}
+	}
+
+	public List<GrupoDTO> getGruposPorIdMembro(Long idMembro) {
+		UsuarioDTO user = usuarioService.obterPorId(idMembro);
+		Usuario usuario = new Usuario();
+
+		if (user != null) {
+			usuario.setId(user.getId());
+		} else {
+			return null;
+		}
+
+		List<Grupo> Grupos = grupoRepository.findAll();
+		List<Grupo> gruposParticipantes = new ArrayList<Grupo>();
+
+		for (Grupo grupo : Grupos) {
+			if (grupo.containsMembro(usuario)) {
+				gruposParticipantes.add(grupo);
+			}
+		}
+
+		return this.converterLista(gruposParticipantes);
 	}
 
 	@Override

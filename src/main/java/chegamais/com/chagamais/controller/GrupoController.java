@@ -48,6 +48,18 @@ public class GrupoController {
     	
     	return this.gerarRespostaListagemMembros(listaMembros, 200);
     }
+    
+    @GetMapping("/listarGruposPorMembro/{idMembro}")
+    public ResponseEntity<List<GrupoResponse>> listarGruposPorMembro(@PathVariable Long idMembro){
+
+        List<GrupoDTO> Grupos = this.grupoService.getGruposPorIdMembro(idMembro);
+        
+        if (Grupos == null) {
+        	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	}
+
+        return ResponseEntity.status(200).body(this.converterLista(Grupos));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GrupoResponse> selecionarPorId(@PathVariable Long id){

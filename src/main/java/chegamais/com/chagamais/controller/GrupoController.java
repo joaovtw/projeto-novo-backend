@@ -72,6 +72,14 @@ public class GrupoController {
 
         return this.gerarRespostaCompleta(grupo, 201);
     }
+    
+    @DeleteMapping("/{idGrupo}/removerMembro/{idUsuario}")
+    public ResponseEntity<Grupo> removerMembro(@PathVariable Long idGrupo, @PathVariable Long idUsuario){
+
+        Grupo grupo = this.grupoService.removeMembro(idGrupo, idUsuario);
+
+        return this.gerarRespostaCompleta(grupo, 200);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<GrupoResponse> atualizar(@RequestBody GrupoFormUpdate GrupoFormUpdate, @PathVariable Long id){

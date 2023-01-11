@@ -66,6 +66,13 @@ public class Grupo {
     	return this.membros.contains(user);
     }
     
+    public Usuario removeMembro(Usuario user) {
+    	if (existsMembro(user)) {
+    		this.membros.remove(user);
+    		return user;
+    	}
+    	return null;
+    }
 
     
 

@@ -60,6 +60,21 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 			return null;
 		}
 	}
+	
+	public Grupo removeMembro(Long idGrupo, Long idMembro) {
+		Optional<Grupo> GrupoOp = grupoRepository.findById(idGrupo);
+		UsuarioDTO user = usuarioService.obterPorId(idMembro);
+
+		if (GrupoOp.isPresent() && user != null) {
+			Usuario user1 = new Usuario();
+			user1.setId(user.getId());
+			GrupoOp.get().removeMembro(user1);
+			this.grupoRepository.saveAndFlush(GrupoOp.get());
+			return GrupoOp.get();
+		} else {
+			return null;
+		}
+	}
 
 	@Override
 	public GrupoDTO adicionar(GrupoDTO dto) {
@@ -118,6 +133,7 @@ public class GrupoService implements ServiceInteface<GrupoDTO> {
 		for (Usuario Usuario : Usuarios) {
 			UsuarioDTO dto = new UsuarioDTO(Usuario.getNome(), Usuario.getDataNascimento(),
 					Usuario.getPosicaoFavorita(), Usuario.getEmail(), null);
+			dto.setId(Usuario.getId());
 			DTOs.add(dto);
 		}
 

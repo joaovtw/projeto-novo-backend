@@ -10,7 +10,38 @@ import javax.validation.constraints.NotNull;
 
 public class Horario {
 
-    public Horario {
-        
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @NotNull @NotEmpty
+    private String horario;
+    
+    public Horario() {
+
     }
+
+    public Horario(@NotNull @NotEmpty String horario) {
+        this.horario = horario;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getHorario() {
+        return horario;
+    }
+
+    // Dúvida: é adequado estabelecer esse método de mudança de horário?
+    /*
+    public void setHorario(String horario) {
+        this.horario = horario;
+    }
+    */
+
+
 }
